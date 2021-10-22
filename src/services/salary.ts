@@ -7,19 +7,19 @@ import {
   nextWednesday,
 } from 'date-fns';
 
-interface ISalary {
+export interface ISalary {
   regular: string;
   bonus: string;
 }
 
 export class SalaryService {
-  private findLastWorkingDay(
-    startDate: Date,
-    lastDateHasBeenDefined = false
-  ): Date {
-    let lastWorkingDay = lastDateHasBeenDefined
-      ? startDate
-      : lastDayOfMonth(startDate);
+  constructor(
+    private readonly normalBonusDay: number,
+    private readonly repetition: number
+  ) {}
+
+  private findLastWorkingDay(date: Date, lastDateHasBeenDefined = false): Date {
+    let lastWorkingDay = lastDateHasBeenDefined ? date : lastDayOfMonth(date);
 
     if (isWeekend(lastWorkingDay)) {
       lastWorkingDay = this.findLastWorkingDay(
@@ -33,7 +33,7 @@ export class SalaryService {
 
   private findBonusDate(regularDate: Date): Date {
     let nextBonusDate = new Date(
-      format(addMonths(regularDate, 1), 'yyyy-MM-15')
+      format(addMonths(regularDate, 1), `yyyy-MM-${this.normalBonusDay}`)
     );
 
     if (isWeekend(nextBonusDate)) {
@@ -43,15 +43,15 @@ export class SalaryService {
     return nextBonusDate;
   }
 
-  public getSalaries(n: number, startDate: Date): ISalary[] {
+  public getSalaries(startDate: Date): ISalary[] {
     const plan = [] as ISalary[];
-    [...Array(n)].forEach((_, i) => {
+    [...Array(this.repetition)].forEach((_, i) => {
       const regularDate = this.findLastWorkingDay(addMonths(startDate, i));
-      const salary = {
+
+      plan.push({
         regular: format(regularDate, 'yyyy-MM-dd'),
         bonus: format(this.findBonusDate(regularDate), 'yyyy-MM-dd'),
-      };
-      plan.push(salary);
+      });
     });
 
     return plan;
