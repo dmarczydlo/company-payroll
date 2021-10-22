@@ -1,19 +1,18 @@
-import React, { ChangeEvent, useState } from 'react';
+import React from 'react';
 import DatePicker from 'react-datepicker';
-
 import 'react-datepicker/dist/react-datepicker.css';
 
-interface IDateInputProperty {
+interface IDateInputProps {
   onChange(e: any): void;
   startDate: Date;
 }
 
-const DateInput = ({ onChange, startDate }: IDateInputProperty) => {
+const DateInput = ({ onChange, startDate }: IDateInputProps) => {
   return (
     <DatePicker
       selected={startDate}
       onChange={onChange}
-      dateFormat='yyyy/MM/dd'
+      dateFormat='yyyy-MM-dd'
     />
   );
 };
