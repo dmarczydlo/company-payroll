@@ -7,9 +7,12 @@ import { WrapperStyled } from 'page/Home/Home.styled';
 import { useGenerateSalaryScheduler } from 'hooks/useGenerateSalaryScheduler';
 import { useSetDate } from 'hooks/useSetDate';
 import { Table } from 'component/Table';
+import { useExportToCSV } from 'hooks/useExportCSV';
+import { ISalary } from 'services/salary';
 const Home = () => {
   const { generateSalary, salarySchedule } = useGenerateSalaryScheduler(12, 15);
   const { setDataAfterChange, startDate } = useSetDate();
+  const { generateData } = useExportToCSV<ISalary>('export');
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -22,7 +25,11 @@ const Home = () => {
           title='Generate plan'
           onClick={() => generateSalary(startDate)}
         />
-        <Button title='Export to CSV' onClick={() => {}}></Button>
+        <Button
+          disabled={salarySchedule.length === 0}
+          title='Export to CSV'
+          onClick={() => generateData(salarySchedule)}
+        ></Button>
       </WrapperStyled>
       <Table src={salarySchedule} />
     </ThemeProvider>

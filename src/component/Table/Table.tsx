@@ -25,7 +25,9 @@ const Table = ({ src }: ITableProps) => (
           </tr>
         ))
       ) : (
-        <tr>No data yet</tr>
+        <tr>
+          <td>No data yet</td>
+        </tr>
       )}
     </tbody>
   </TableStyled>

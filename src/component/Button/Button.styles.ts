@@ -8,4 +8,9 @@ export const ButtonStyled = styled.button`
   color: ${(props) => props.theme.palette.standard.white};
   cursor: pointer;
   border: none;
+
+  &:disabled {
+    background-color: ${(props) => props.theme.palette.primary.blocked};
+    cursor: not-allowed;
+  }
 `;
